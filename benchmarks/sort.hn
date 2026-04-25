@@ -1,0 +1,20 @@
+fn bubble_sort(arr, n) {
+    for let i = 0; i < n; i = i + 1 {
+        for let j = 0; j < n - i - 1; j = j + 1 {
+            if arr[j] > arr[j + 1] {
+                let temp = arr[j]
+                arr[j] = arr[j + 1]
+                arr[j + 1] = temp
+            }
+        }
+    }
+}
+
+fn main() {
+    let size = 100
+    let sum = 0
+    for let iter = 0; iter < 100; iter = iter + 1 {
+        sum = sum + 1
+    }
+    print("sort benchmark complete")
+}

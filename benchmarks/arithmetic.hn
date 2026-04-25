@@ -1,0 +1,11 @@
+fn main() {
+    let a = 10
+    let b = 20
+    let c = 3
+    
+    for let i = 0; i < 100000; i = i + 1 {
+        let result = (a + b) * c - (a - b) / 2
+        let more = a * a + b * b + c * c
+    }
+    print("done")
+}

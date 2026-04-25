@@ -1,0 +1,22 @@
+{
+  "name": "hunnu-benchmark",
+  "version": "1.0.0",
+  "description": "Benchmark suite for hunnu-lang",
+  "scripts": {
+    "test": "python3 benchmark.py",
+    "test:all": "python3 benchmark.py --runs 10 --json",
+    "test:loop": "python3 benchmark.py --test loop",
+    "test:fibonacci": "python3 benchmark.py --test fibonacci",
+    "test:recursion": "python3 benchmark.py --test recursion",
+    "test:arithmetic": "python3 benchmark.py --test arithmetic",
+    "test:sieve": "python3 benchmark.py --test sieve",
+    "test:sort": "python3 benchmark.py --test sort",
+    "bench": "./run_benchmarks.sh all",
+    "bench:list": "./run_benchmarks.sh list",
+    "lint": "ruff check .",
+    "format": "ruff format ."
+  },
+  "keywords": ["hunnu", "benchmark", "language"],
+  "author": "hunnu-labs",
+  "license": "MIT"
+}
