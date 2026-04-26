@@ -49,6 +49,8 @@ npm test
 | `arithmetic.hn` | Multiple arithmetic operations in a loop |
 | `sieve.hn` | Prime number detection using sieve algorithm |
 | `sort.hn` | Sorting algorithm benchmark |
+| `array.hn` | Array access and iteration |
+| `string.hn` | String concatenation and length |
 
 ## Usage
 
@@ -120,7 +122,6 @@ npm run format        # Format code
 
 ```hunnu
 fn main() {
-    // Your benchmark code here
     let result = 0
     for let i = 0; i < 1000000; i = i + 1 {
         result = result + i
@@ -136,13 +137,26 @@ fn main() {
 
 3. The benchmark will be automatically included in future runs.
 
+## Hunnu Language Features
+
+| Feature | Syntax |
+|---------|-------|
+| Variables | `let x = 10` |
+| Functions | `fn add(a, b) { return a + b }` |
+| If/Else | `if x > 0 { ... } else { ... }` |
+| For loop | `for let i = 0; i < 3; i = i + 1 { ... }` |
+| While loop | `while x > 0 { ... }` |
+| Break/Continue | `break` / `continue` |
+| Arrays | `let arr = [1, 2, 3]`, `arr[0]` |
+| Strings | `"a" + "b"`, `len(s)` |
+
 ## Output Format
 
 ### Console Output
 ```
 Running hunnu-lang benchmarks
 Binary: ./build/hunnu
-Benchmarks: 6
+Benchmarks: 8
 Runs per benchmark: 5
 ------------------------------------------------------------
 loop                | mean:    125.43ms | std:     3.21ms
@@ -151,6 +165,8 @@ recursion           | mean:     45.67ms | std:     1.89ms
 arithmetic          | mean:    110.23ms | std:     2.78ms
 sieve               | mean:    156.78ms | std:     4.12ms
 sort                | mean:    203.45ms | std:     5.34ms
+array               | mean:     78.90ms | std:     2.11ms
+string              | mean:     56.78ms | std:     1.45ms
 ------------------------------------------------------------
 ```
 
@@ -180,6 +196,14 @@ sort                | mean:    203.45ms | std:     5.34ms
 ```
 hunnu-benchmark/
 ├── benchmarks/           # Hunnu benchmark programs (.hn files)
+│   ├── loop.hn
+│   ├── fibonacci.hn
+│   ├── recursion.hn
+│   ├── arithmetic.hn
+│   ├── sieve.hn
+│   ├── sort.hn
+│   ├── array.hn       # NEW: array operations
+│   └── string.hn      # NEW: string operations
 ├── scripts/              # Helper scripts
 ├── results/              # JSON output results
 ├── tests/                # Unit tests

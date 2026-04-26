@@ -10,7 +10,9 @@ This repository contains benchmark code for [hunnu-lang](https://github.com/hunn
 Hunnu is a C-based programming language with these features:
 - **Variables**: `let x = 10`
 - **Functions**: `fn add(a, b) { return a + b }`
-- **Control Flow**: `if`, `while`, `for` loops
+- **Control Flow**: `if`, `while`, `for` loops, `break`, `continue`
+- **Arrays**: `let arr = [1, 2, 3]`, `arr[0]`
+- **Strings**: `"a" + "b"`, `len(s)`
 - **Printing**: `print("Hello")`
 
 ### Running Hunnu Programs
