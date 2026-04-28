@@ -209,12 +209,12 @@ def benchmark_hunnu_execution():
 
 ```
 hunnu-benchmark/
-├── benchmarks/           # Benchmark programs (.hn files)
-├── scripts/              # Benchmark runner scripts
-├── results/               # Benchmark output results
-├── hunnu/                 # Hunnu language implementation (submodule?)
-├── build/                 # Build output
-└── AGENTS.md             # This file
+|-- benchmarks/           # Benchmark programs (.hn files)
+|-- scripts/              # Benchmark runner scripts
+|-- results/               # Benchmark output results
+|-- hunnu/                 # Hunnu language implementation (submodule?)
+|-- build/                 # Build output
+`-- AGENTS.md             # This file
 ```
 
 ---

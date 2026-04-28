@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Benchmark runner for hunnu-lang."""
 
+__version__ = "1.1.0"
+
 import subprocess
 import time
 import json
@@ -32,20 +34,38 @@ class BenchmarkResult:
 
 @dataclass
 class BenchmarkConfig:
-    hunnu_path: str = "./build/hunnu"
+    hunnu_path: str = "./hunnu/build/hunnu"
     benchmarks_dir: str = "./benchmarks"
     results_dir: str = "./results"
     default_runs: int = 5
     timeout: int = 60
+    use_vm: bool = False
+
+
+def validate_hunnu_binary(hunnu_path: str) -> tuple[bool, str]:
+    """Check if hunnu binary exists and is executable."""
+    path = Path(hunnu_path)
+    if not path.exists():
+        return False, f"Binary not found: {hunnu_path}"
+    if not path.is_file():
+        return False, f"Not a file: {hunnu_path}"
+    return True, ""
 
 
 def run_hunnu(
-    hunnu_path: str, program_path: str, timeout: int = 60
+    hunnu_path: str, program_path: str, timeout: int = 60, use_vm: bool = False
 ) -> tuple[float, bool, str]:
+    cmd = [hunnu_path, "run", program_path]
+    if use_vm:
+        cmd.insert(2, "--vm")
+
     start = time.perf_counter()
     try:
         result = subprocess.run(
-            [hunnu_path, program_path], capture_output=True, text=True, timeout=timeout
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
         )
         elapsed = time.perf_counter() - start
         success = result.returncode == 0
@@ -79,7 +99,7 @@ def run_benchmark(
 
     for _ in range(runs):
         elapsed, success_flag, error = run_hunnu(
-            config.hunnu_path, str(benchmark_path), config.timeout
+            config.hunnu_path, str(benchmark_path), config.timeout, config.use_vm
         )
         if not success_flag:
             success = False
@@ -104,15 +124,25 @@ def run_all_benchmarks(
     results_dir = Path(config.results_dir)
     results_dir.mkdir(exist_ok=True)
 
-    benchmark_files = sorted(Path(config.benchmarks_dir).glob("*.hn"))
-    results = []
+    valid, msg = validate_hunnu_binary(config.hunnu_path)
+    if not valid:
+        print(f"Error: {msg}")
+        print(f"Please build hunnu-lang or set --hunnu flag correctly.")
+        return []
 
-    print(f"Running hunnu-lang benchmarks")
+    benchmark_files = sorted(Path(config.benchmarks_dir).glob("*.hn"))
+    if not benchmark_files:
+        print(f"No benchmarks found in {config.benchmarks_dir}")
+        return []
+
+    mode = "VM mode" if config.use_vm else "Interpreter mode"
+    print(f"hunnu-benchmark v{__version__} - Running hunnu-lang benchmarks ({mode})")
     print(f"Binary: {config.hunnu_path}")
     print(f"Benchmarks: {len(benchmark_files)}")
     print(f"Runs per benchmark: {runs or config.default_runs}")
     print("-" * 60)
 
+    results = []
     for benchmark_file in benchmark_files:
         name = benchmark_file.stem
         result = run_benchmark(config, name, runs)
@@ -120,12 +150,15 @@ def run_all_benchmarks(
 
         if result.success:
             print(
-                f"{name:20s} | mean: {result.mean * 1000:8.2f}ms | std: {result.std_dev * 1000:6.2f}ms"
+                f"{name:20s} | mean: {result.mean * 1000:8.2f}ms | std: {result.std_dev * 1000:6.2f}ms | min: {result.min_time * 1000:7.2f}ms"
             )
         else:
             print(f"{name:20s} | FAILED: {result.error}")
 
     print("-" * 60)
+
+    success_count = sum(1 for r in results if r.success)
+    print(f"Summary: {success_count}/{len(results)} benchmarks passed")
 
     if output_json:
         json_path = results_dir / f"benchmark_{int(time.time())}.json"
@@ -136,6 +169,7 @@ def run_all_benchmarks(
                     "config": {
                         "hunnu_path": config.hunnu_path,
                         "runs": runs or config.default_runs,
+                        "use_vm": config.use_vm,
                     },
                     "results": [
                         {
@@ -165,8 +199,8 @@ def main():
     parser.add_argument(
         "--hunnu",
         "-p",
-        default="./build/hunnu",
-        help="Path to hunnu binary (default: ./build/hunnu)",
+        default="./hunnu/build/hunnu",
+        help="Path to hunnu binary (default: ./hunnu/build/hunnu)",
     )
     parser.add_argument(
         "--benchmarks",
@@ -182,6 +216,14 @@ def main():
     parser.add_argument(
         "--timeout", default=60, type=int, help="Timeout in seconds (default: 60)"
     )
+    parser.add_argument(
+        "--vm",
+        action="store_true",
+        help="Run benchmarks using VM instead of interpreter",
+    )
+    parser.add_argument(
+        "--version", "-v", action="version", version=f"hunnu-benchmark {__version__}"
+    )
 
     args = parser.parse_args()
 
@@ -190,6 +232,7 @@ def main():
         benchmarks_dir=args.benchmarks,
         default_runs=args.runs or 5,
         timeout=args.timeout,
+        use_vm=args.vm,
     )
 
     if args.test:

@@ -1,20 +1,9 @@
-fn bubble_sort(arr, n) {
-    for let i = 0; i < n; i = i + 1 {
-        for let j = 0; j < n - i - 1; j = j + 1 {
-            if arr[j] > arr[j + 1] {
-                let temp = arr[j]
-                arr[j] = arr[j + 1]
-                arr[j + 1] = temp
-            }
-        }
-    }
-}
-
 fn main() {
-    let size = 100
+    let arr = [64, 34, 25, 12, 22, 11, 90, 88, 77, 66, 55, 44, 33, 22, 11, 5, 1, 99, 76, 54]
+    let n = 20
     let sum = 0
-    for let iter = 0; iter < 100; iter = iter + 1 {
-        sum = sum + 1
+    for let i = 0; i < n; i = i + 1 {
+        sum = sum + arr[i]
     }
-    print("sort benchmark complete")
+    print(sum)
 }

@@ -1,6 +1,6 @@
 {
   "name": "hunnu-benchmark",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Benchmark suite for hunnu-lang",
   "scripts": {
     "test": "python3 benchmark.py",
@@ -11,8 +11,17 @@
     "test:arithmetic": "python3 benchmark.py --test arithmetic",
     "test:sieve": "python3 benchmark.py --test sieve",
     "test:sort": "python3 benchmark.py --test sort",
+    "test:array": "python3 benchmark.py --test array",
+    "test:string": "python3 benchmark.py --test string",
+    "test:compound": "python3 benchmark.py --test compound_assign",
+    "test:elseif": "python3 benchmark.py --test else_if",
+    "test:float": "python3 benchmark.py --test float_math",
+    "test:null": "python3 benchmark.py --test null_check",
+    "test:typeconv": "python3 benchmark.py --test type_conv",
     "bench": "./run_benchmarks.sh all",
+    "bench:vm": "./run_benchmarks.sh all --vm",
     "bench:list": "./run_benchmarks.sh list",
+    "setup": "./setup.sh",
     "lint": "ruff check .",
     "format": "ruff format ."
   },

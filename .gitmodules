@@ -1,0 +1,3 @@
+[submodule "hunnu"]
+	path = hunnu
+	url = https://github.com/hunnu-labs/hunnu-lang.git

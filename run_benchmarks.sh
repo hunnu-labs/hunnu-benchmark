@@ -2,10 +2,11 @@
 
 set -e
 
-HUNNU_PATH="${HUNNU_PATH:-./build/hunnu}"
+HUNNU_PATH="${HUNNU_PATH:-./hunnu/build/hunnu}"
 BENCHMARKS_DIR="${BENCHMARKS_DIR:-./benchmarks}"
 RESULTS_DIR="${RESULTS_DIR:-./results}"
 RUNS="${RUNS:-5}"
+USE_VM=""
 
 mkdir -p "$RESULTS_DIR"
 
@@ -35,15 +36,23 @@ Commands:
     help        Show this help message
 
 Options:
-    --hunnu PATH       Path to hunnu binary (default: ./build/hunnu)
+    --hunnu PATH       Path to hunnu binary (default: ./hunnu/build/hunnu)
     --runs N           Number of runs per benchmark (default: 5)
     --json             Save results as JSON
+    --vm               Use VM mode instead of interpreter
     --test NAME        Run a specific benchmark
+
+Environment Variables:
+    HUNNU_PATH         Path to hunnu binary
+    BENCHMARKS_DIR     Benchmark directory
+    RESULTS_DIR        Results output directory
+    RUNS               Number of runs per benchmark
 
 Examples:
     $0 all
     $0 test loop --runs 10
     $0 all --hunnu ./build/hunnu --json
+    $0 all --vm
 EOF
 }
 
@@ -56,12 +65,40 @@ list_benchmarks() {
     done
 }
 
+parse_args() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --hunnu)
+                HUNNU_PATH="$2"
+                shift 2
+                ;;
+            --runs)
+                RUNS="$2"
+                shift 2
+                ;;
+            --json)
+                JSON_FLAG="--json"
+                shift
+                ;;
+            --vm)
+                USE_VM="--vm"
+                shift
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+}
+
 cmd="${1:-all}"
 shift || true
 
+parse_args "$@"
+
 case "$cmd" in
     all)
-        python3 benchmark.py "$@"
+        python3 benchmark.py --hunnu "$HUNNU_PATH" --runs "$RUNS" $JSON_FLAG $USE_VM
         ;;
     test)
         name="${1:-}"
@@ -70,7 +107,9 @@ case "$cmd" in
             echo "Usage: $0 test <benchmark_name>"
             exit 1
         fi
-        python3 benchmark.py --test "$name" "$@"
+        shift
+        parse_args "$@"
+        python3 benchmark.py --hunnu "$HUNNU_PATH" --test "$name" --runs "$RUNS" $USE_VM
         ;;
     list)
         list_benchmarks

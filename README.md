@@ -4,39 +4,46 @@ Benchmark suite for [hunnu-lang](https://github.com/hunnu-labs/hunnu-lang), a li
 
 ## Features
 
-- Comprehensive benchmarks for measuring hunnu-lang performance
-- Python-based benchmark runner with statistical analysis
-- Shell script runner for quick testing
+- 13 comprehensive benchmarks for measuring hunnu-lang performance
+- Python-based benchmark runner with statistical analysis (mean, std dev, min, max)
+- Shell script and npm script runners for quick testing
 - JSON export for data analysis
-- Easy to extend with new benchmarks
+- Support for both interpreter and VM modes
+- Automated setup script
+- Binary validation before running benchmarks
 
 ## Prerequisites
 
-- [hunnu-lang](https://github.com/hunnu-labs/hunnu-lang) installed and built
 - Python 3.7+
+- CMake and C compiler (for building hunnu-lang)
+- Git
 
 ## Quick Start
 
-### 1. Clone and Build hunnu-lang
+### Option 1: Automated Setup (Recommended)
 
 ```bash
-git clone https://github.com/hunnu-labs/hunnu-lang.git hunnu
-cd hunnu
-mkdir -p build && cd build
-cmake ..
-make
+./setup.sh
 ```
 
-This will create the `hunnu` binary at `hunnu/build/hunnu`.
+This will initialize the hunnu-lang submodule and build the binary automatically.
 
-### 2. Run All Benchmarks
+### Option 2: Manual Setup
 
 ```bash
-python3 benchmark.py
-# or
-./run_benchmarks.sh all
-# or
-npm test
+# Initialize submodule
+git submodule update --init --recursive
+
+# Build hunnu-lang
+cd hunnu && mkdir -p build && cd build && cmake .. && make
+```
+
+### Run Benchmarks
+
+```bash
+python3 benchmark.py        # Python runner
+./run_benchmarks.sh all     # Shell script
+npm test                    # npm script
 ```
 
 ## Benchmark Programs
@@ -48,9 +55,14 @@ npm test
 | `recursion.hn` | Recursive factorial calculation |
 | `arithmetic.hn` | Multiple arithmetic operations in a loop |
 | `sieve.hn` | Prime number detection using sieve algorithm |
-| `sort.hn` | Sorting algorithm benchmark |
+| `sort.hn` | Array access and iteration |
 | `array.hn` | Array access and iteration |
 | `string.hn` | String concatenation and length |
+| `compound_assign.hn` | Compound assignment operators (+=, -=, *=, /=) |
+| `else_if.hn` | Else-if conditional chains |
+| `float_math.hn` | Floating-point arithmetic operations |
+| `null_check.hn` | Null value handling and checks |
+| `type_conv.hn` | Type conversion functions (to_str, to_int) |
 
 ## Usage
 
@@ -61,29 +73,21 @@ python3 benchmark.py [OPTIONS]
 ```
 
 **Options:**
-- `--hunnu, -p PATH` - Path to hunnu binary (default: `./build/hunnu`)
-- `--benchmarks, -d DIR` - Benchmark directory (default: `./benchmarks`)
+- `--hunnu, -p PATH` - Path to hunnu binary (default: `./hunnu/build/hunnu`)
 - `--runs, -n N` - Number of runs per benchmark (default: 5)
 - `--test, -t NAME` - Run a single benchmark by name
 - `--json, -j` - Save results as JSON
-- `--timeout SECONDS` - Timeout in seconds (default: 60)
+- `--vm` - Run benchmarks using VM instead of interpreter
+- `--version, -v` - Show version and exit
 
 **Examples:**
 ```bash
-# Run all benchmarks with default settings
-python3 benchmark.py
-
-# Run all benchmarks with 10 iterations
-python3 benchmark.py --runs 10
-
-# Run a single benchmark
-python3 benchmark.py --test loop
-
-# Run with custom hunnu binary path
-python3 benchmark.py --hunnu ./hunnu/build/hunnu
-
-# Save results as JSON
-python3 benchmark.py --json
+python3 benchmark.py                          # Run all benchmarks
+python3 benchmark.py --runs 10                # Run with 10 iterations
+python3 benchmark.py --test loop              # Run single benchmark
+python3 benchmark.py --json                   # Save results as JSON
+python3 benchmark.py --vm                      # Run using VM mode
+python3 benchmark.py --version                 # Show version
 ```
 
 ### Shell Script Runner
@@ -92,11 +96,7 @@ python3 benchmark.py --json
 ./run_benchmarks.sh [COMMAND] [OPTIONS]
 ```
 
-**Commands:**
-- `all` - Run all benchmarks (default)
-- `test NAME` - Run a specific benchmark
-- `list` - List available benchmarks
-- `help` - Show help message
+**Commands:** `all` (default), `test NAME`, `list`, `help`
 
 **Examples:**
 ```bash
@@ -105,69 +105,72 @@ python3 benchmark.py --json
 ./run_benchmarks.sh list
 ```
 
+**Environment Variables:** `HUNNU_PATH`, `BENCHMARKS_DIR`, `RESULTS_DIR`, `RUNS`
+
 ### npm Scripts
 
 ```bash
-npm test              # Run all benchmarks
-npm run bench         # Run via shell script
-npm run test:loop     # Run single benchmark
-npm run test:all      # Run with 10 iterations + JSON
-npm run lint          # Run linter
-npm run format        # Format code
+npm test                   # Run all benchmarks
+npm run bench              # Run via shell script
+npm run test:loop          # Run single benchmark
+npm run test:all           # Run with 10 iterations + JSON
+npm run setup              # Run setup script
+npm run lint               # Run linter (ruff check)
+npm run format             # Format code (ruff format)
 ```
 
 ## Adding New Benchmarks
 
-1. Create a new `.hn` file in the `benchmarks/` directory:
+1. Create a new `.hn` file in `benchmarks/`:
+   ```hunnu
+   fn main() {
+       let result = 0
+       for let i = 0; i < 1000000; i = i + 1 {
+           result = result + i
+       }
+       print(result)
+   }
+   ```
 
-```hunnu
-fn main() {
-    let result = 0
-    for let i = 0; i < 1000000; i = i + 1 {
-        result = result + i
-    }
-    print(result)
-}
-```
-
-2. Run to verify it works:
-```bash
-./build/hunnu benchmarks/your_benchmark.hn
-```
+2. Verify it works:
+   ```bash
+   ./hunnu/build/hunnu run benchmarks/your_benchmark.hn
+   ```
 
 3. The benchmark will be automatically included in future runs.
 
 ## Hunnu Language Features
 
 | Feature | Syntax |
-|---------|-------|
+|---------|---------|
 | Variables | `let x = 10` |
 | Functions | `fn add(a, b) { return a + b }` |
 | If/Else | `if x > 0 { ... } else { ... }` |
+| Else If | `if x > 0 { ... } else if x > 5 { ... }` |
 | For loop | `for let i = 0; i < 3; i = i + 1 { ... }` |
 | While loop | `while x > 0 { ... }` |
 | Break/Continue | `break` / `continue` |
+| Compound Assignment | `x += 1`, `x -= 2`, `x *= 3` |
 | Arrays | `let arr = [1, 2, 3]`, `arr[0]` |
 | Strings | `"a" + "b"`, `len(s)` |
+| Floats | `let pi = 3.14159` |
+| Null | `let x = null` |
+| Type Conversion | `to_int()`, `to_float()`, `to_str()` |
 
 ## Output Format
 
 ### Console Output
 ```
-Running hunnu-lang benchmarks
-Binary: ./build/hunnu
-Benchmarks: 8
+hunnu-benchmark v1.1.0 - Running hunnu-lang benchmarks (Interpreter mode)
+Binary: ./hunnu/build/hunnu
+Benchmarks: 13
 Runs per benchmark: 5
 ------------------------------------------------------------
-loop                | mean:    125.43ms | std:     3.21ms
-fibonacci           | mean:     89.12ms | std:     2.45ms
-recursion           | mean:     45.67ms | std:     1.89ms
-arithmetic          | mean:    110.23ms | std:     2.78ms
-sieve               | mean:    156.78ms | std:     4.12ms
-sort                | mean:    203.45ms | std:     5.34ms
-array               | mean:     78.90ms | std:     2.11ms
-string              | mean:     56.78ms | std:     1.45ms
+loop                 | mean:   254.31ms | std:   5.12ms | min:  246.78ms
+fibonacci            | mean:     0.56ms | std:   0.04ms | min:    0.51ms
+...
 ------------------------------------------------------------
+Summary: 13/13 benchmarks passed
 ```
 
 ### JSON Output
@@ -175,16 +178,17 @@ string              | mean:     56.78ms | std:     1.45ms
 {
   "timestamp": 1714089600,
   "config": {
-    "hunnu_path": "./build/hunnu",
-    "runs": 5
+    "hunnu_path": "./hunnu/build/hunnu",
+    "runs": 5,
+    "use_vm": false
   },
   "results": [
     {
       "name": "loop",
-      "mean_ms": 125.43,
-      "std_dev_ms": 3.21,
-      "min_ms": 122.15,
-      "max_ms": 130.22,
+      "mean_ms": 254.31,
+      "std_dev_ms": 5.12,
+      "min_ms": 246.78,
+      "max_ms": 262.45,
       "success": true
     }
   ]
@@ -195,25 +199,41 @@ string              | mean:     56.78ms | std:     1.45ms
 
 ```
 hunnu-benchmark/
-├── benchmarks/           # Hunnu benchmark programs (.hn files)
-│   ├── loop.hn
-│   ├── fibonacci.hn
-│   ├── recursion.hn
-│   ├── arithmetic.hn
-│   ├── sieve.hn
-│   ├── sort.hn
-│   ├── array.hn       # NEW: array operations
-│   └── string.hn      # NEW: string operations
-├── scripts/              # Helper scripts
-├── results/              # JSON output results
-├── tests/                # Unit tests
-├── hunnu/                # hunnu-lang (optional submodule)
-├── benchmark.py          # Python benchmark runner
-├── run_benchmarks.sh     # Shell script runner
-├── package.json          # npm scripts
-└── README.md             # This file
+|-- benchmarks/              # Hunnu benchmark programs (.hn files)
+|   |-- loop.hn
+|   |-- fibonacci.hn
+|   `-- ... (13 total)
+|-- results/                 # JSON output results
+|-- hunnu/                   # hunnu-lang (git submodule)
+|   `-- build/hunnu         # hunnu binary (after build)
+|-- benchmark.py             # Python benchmark runner
+|-- run_benchmarks.sh        # Shell script runner
+|-- setup.sh                 # Automated setup script
+|-- package.json             # npm scripts
+|-- AGENTS.md                # Agent guidelines
+|-- CHANGELOG.md             # Version history
+`-- README.md                # This file
+```
+
+## Development
+
+```bash
+# Install dev dependencies (if needed)
+pip install -r requirements-dev.txt 2>/dev/null || echo "No requirements-dev.txt found"
+
+# Lint Python code
+npm run lint
+# or: ruff check .
+
+# Format Python code
+npm run format
+# or: ruff format .
 ```
 
 ## License
 
 MIT
+
+---
+
+For version history, see [CHANGELOG.md](CHANGELOG.md).
