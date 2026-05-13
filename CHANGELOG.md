@@ -8,23 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Version display in benchmark output (`hunnu-benchmark v1.1.0`)
-- `--version` / `-v` flag to benchmark.py
-- `setup.sh` script for automated hunnu-lang setup
-- `npm run setup` script
+- Warmup runs before measurement (`--warmup` / `-w`, default: 2)
+- Percentile statistics: median (p50), p95, p99 in output and JSON export
+- `--compare` mode: runs all benchmarks in both interpreter and VM, shows speedup ratio
+- `--vm-rust` flag for Rust VM mode
+- `scripts/compare_results.py` for comparing two JSON result files
+- `tests/test_benchmark_runner.py` with unit tests for runner utilities
+- `.gitignore` with sensible defaults
 
 ### Changed
-- Fixed hunnu-lang submodule setup (proper `git submodule add`)
-- Updated hunnu binary path from `./build/hunnu` to `./hunnu/build/hunnu`
-- Fixed `benchmark.py` to use `run` subcommand correctly
-- Fixed `sort.hn` benchmark (replaced broken bubble sort with array access test)
-- Updated `package.json` with new test scripts for all benchmarks
-- Refactored README for clarity and accuracy
+- **Major refactor** of `benchmark.py`: warmup runs, percentile stats, cleaner output with progress bar
+- Refactored `run_benchmarks.sh`: fixed duplicate parse_args bug, cleaner argument handling, added compare/vm-rust/warmup support
+- Improved `setup.sh`: uses `git submodule update --init` instead of manual clone, parallel build with `-j`
+- Updated `package.json` to v1.2.0 with new scripts: `bench:vm-rust`, `bench:compare`
+- Removed stale `.gitkeep` files from empty directories
 
 ### Fixed
-- Benchmark runner now properly passes `run` subcommand to hunnu binary
-- All 13 benchmarks now pass successfully
-- Array access syntax in benchmarks matches hunnu-lang requirements
+- Array memory leak in hunnu-lang's `value_free()` — now properly frees individual array elements
+- Shell script test command no longer double-parses arguments
 
 ## [1.1.0] - 2026-04-27
 

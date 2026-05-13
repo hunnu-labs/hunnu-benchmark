@@ -1,0 +1,10 @@
+fn main() {
+    let sum = 0
+    for let i = 0; i < 10000; i = i + 1 {
+        let s = to_str(i)
+        let len = len(s)
+        let back = to_int(s)
+        sum = sum + back
+    }
+    print(sum)
+}

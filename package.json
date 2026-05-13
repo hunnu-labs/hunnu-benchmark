@@ -1,6 +1,6 @@
 {
   "name": "hunnu-benchmark",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Benchmark suite for hunnu-lang",
   "scripts": {
     "test": "python3 benchmark.py",
@@ -20,6 +20,8 @@
     "test:typeconv": "python3 benchmark.py --test type_conv",
     "bench": "./run_benchmarks.sh all",
     "bench:vm": "./run_benchmarks.sh all --vm",
+    "bench:vm-rust": "./run_benchmarks.sh all --vm-rust",
+    "bench:compare": "./run_benchmarks.sh compare",
     "bench:list": "./run_benchmarks.sh list",
     "setup": "./setup.sh",
     "lint": "ruff check .",
