@@ -1,0 +1,8 @@
+fn main() {
+    let mut sum = 0.0
+    for let mut i = 0; i < 200000; i = i + 1 {
+        let a = to_float(i)
+        sum = sum + a * 1.5 - a / 2.0 + a * a
+    }
+    print(to_int(sum))
+}

@@ -1,0 +1,10 @@
+fn main() {
+    let mut sum = 0
+    for let mut i = 0; i < 100000; i = i + 1 {
+        let s = to_str(i)
+        let n = to_int(s)
+        let f = to_float(n)
+        sum = sum + to_int(f)
+    }
+    print(sum)
+}

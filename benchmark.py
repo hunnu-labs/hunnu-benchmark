@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Benchmark runner for hunnu-lang."""
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 import subprocess
 import time

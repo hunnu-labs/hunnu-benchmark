@@ -7,24 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-05-15
+
 ### Added
-- Version display in benchmark output (`hunnu-benchmark v1.1.0`)
-- `--version` / `-v` flag to benchmark.py
-- `setup.sh` script for automated hunnu-lang setup
-- `npm run setup` script
+- 4 new benchmarks for advanced hunnu-lang features:
+  - `while_loop.hn` for while loop iteration performance
+  - `lambda.hn` for lambda/anonymous function call overhead
+  - `class_oop.hn` for class instantiation and method dispatch
+  - `match.hn` for match expression pattern matching
+- npm scripts for all new benchmarks
 
 ### Changed
-- Fixed hunnu-lang submodule setup (proper `git submodule add`)
-- Updated hunnu binary path from `./build/hunnu` to `./hunnu/build/hunnu`
-- Fixed `benchmark.py` to use `run` subcommand correctly
-- Fixed `sort.hn` benchmark (replaced broken bubble sort with array access test)
-- Updated `package.json` with new test scripts for all benchmarks
-- Refactored README for clarity and accuracy
-
-### Fixed
-- Benchmark runner now properly passes `run` subcommand to hunnu binary
-- All 13 benchmarks now pass successfully
-- Array access syntax in benchmarks matches hunnu-lang requirements
+- Updated README benchmark table from 13 to 17 entries
+- Added lambda, class, and match syntax to Hunnu Language Features table
+- Bumped version to 1.2.0
 
 ## [1.1.0] - 2026-04-27
 
@@ -57,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JSON export functionality
 - AGENTS.md with agent guidelines
 
-[Unreleased]: https://github.com/hunnu-labs/hunnu-benchmark/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/hunnu-labs/hunnu-benchmark/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/hunnu-labs/hunnu-benchmark/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/hunnu-labs/hunnu-benchmark/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/hunnu-labs/hunnu-benchmark/releases/tag/v1.0.0
