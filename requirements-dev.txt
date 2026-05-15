@@ -1,0 +1,2 @@
+# Python development dependencies for hunnu-benchmark
+ruff>=0.1.0

@@ -10,17 +10,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.0] - 2026-05-15
 
 ### Added
-- 4 new benchmarks for advanced hunnu-lang features:
-  - `while_loop.hn` for while loop iteration performance
-  - `lambda.hn` for lambda/anonymous function call overhead
-  - `class_oop.hn` for class instantiation and method dispatch
-  - `match.hn` for match expression pattern matching
-- npm scripts for all new benchmarks
+- Warmup runs before measurement (`--warmup` / `-w`, default: 2)
+- Percentile statistics: median (p50), p95, p99 in output and JSON export
+- `--compare` mode: runs all benchmarks in both interpreter and VM, shows speedup ratio
+- `--vm-rust` flag for Rust VM mode
+- `scripts/compare_results.py` for comparing two JSON result files
+- `tests/test_benchmark_runner.py` with unit tests for runner utilities
+- `.gitignore` with sensible defaults
 
 ### Changed
-- Updated README benchmark table from 13 to 17 entries
-- Added lambda, class, and match syntax to Hunnu Language Features table
-- Bumped version to 1.2.0
+- **Major refactor** of `benchmark.py`: warmup runs, percentile stats, cleaner output with progress bar
+- Refactored `run_benchmarks.sh`: fixed duplicate parse_args bug, cleaner argument handling, added compare/vm-rust/warmup support
+- Improved `setup.sh`: uses `git submodule update --init` instead of manual clone, parallel build with `-j`
+- Updated `package.json` to v1.2.0 with new scripts: `bench:vm-rust`, `bench:compare`
+- Removed stale `.gitkeep` files from empty directories
+
+### Fixed
+- Array memory leak in hunnu-lang's `value_free()` — now properly frees individual array elements
+- Shell script test command no longer double-parses arguments
 
 ## [1.1.0] - 2026-04-27
 
