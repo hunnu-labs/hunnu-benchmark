@@ -1,0 +1,16 @@
+class Counter {
+    pub value: int
+    fn new(self) { self.value = 0 }
+    fn increment(self) { self.value = self.value + 1 }
+    fn add(self, n) { self.value = self.value + n }
+    fn get(self) { return self.value }
+}
+
+fn main() {
+    let c = new Counter()
+    for let mut i = 0; i < 200000; i = i + 1 {
+        c.increment()
+    }
+    c.add(100)
+    print(c.get())
+}

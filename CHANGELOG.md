@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-05-15
+
 ### Added
 - Warmup runs before measurement (`--warmup` / `-w`, default: 2)
 - Percentile statistics: median (p50), p95, p99 in output and JSON export
@@ -58,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JSON export functionality
 - AGENTS.md with agent guidelines
 
-[Unreleased]: https://github.com/hunnu-labs/hunnu-benchmark/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/hunnu-labs/hunnu-benchmark/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/hunnu-labs/hunnu-benchmark/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/hunnu-labs/hunnu-benchmark/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/hunnu-labs/hunnu-benchmark/releases/tag/v1.0.0

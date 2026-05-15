@@ -4,7 +4,7 @@ Benchmark suite for [hunnu-lang](https://github.com/hunnu-labs/hunnu-lang), a li
 
 ## Features
 
-- 13 comprehensive benchmarks for measuring hunnu-lang performance
+- 17 comprehensive benchmarks for measuring hunnu-lang performance
 - Python-based benchmark runner with statistical analysis (mean, std dev, min, max)
 - Shell script and npm script runners for quick testing
 - JSON export for data analysis
@@ -63,6 +63,10 @@ npm test                    # npm script
 | `float_math.hn` | Floating-point arithmetic operations |
 | `null_check.hn` | Null value handling and checks |
 | `type_conv.hn` | Type conversion functions (to_str, to_int) |
+| `while_loop.hn` | While loop iteration with counter |
+| `lambda.hn` | Lambda/anonymous function calls |
+| `class_oop.hn` | Class instantiation and method calls |
+| `match.hn` | Match expression pattern matching |
 
 ## Usage
 
@@ -156,14 +160,17 @@ npm run format             # Format code (ruff format)
 | Floats | `let pi = 3.14159` |
 | Null | `let x = null` |
 | Type Conversion | `to_int()`, `to_float()`, `to_str()` |
+| Lambda | `\|x\| x * 2` |
+| Classes | `class Point { ... }`, `new Point()` |
+| Match | `match x { 1 => "one", _ => "other" }` |
 
 ## Output Format
 
 ### Console Output
 ```
-hunnu-benchmark v1.1.0 - Running hunnu-lang benchmarks (Interpreter mode)
+hunnu-benchmark v1.2.0 - Running hunnu-lang benchmarks (Interpreter mode)
 Binary: ./hunnu/build/hunnu
-Benchmarks: 13
+Benchmarks: 17
 Runs per benchmark: 5
 ------------------------------------------------------------
 loop                 | mean:   254.31ms | std:   5.12ms | min:  246.78ms
@@ -202,7 +209,7 @@ hunnu-benchmark/
 |-- benchmarks/              # Hunnu benchmark programs (.hn files)
 |   |-- loop.hn
 |   |-- fibonacci.hn
-|   `-- ... (13 total)
+|   `-- ... (17 total)
 |-- results/                 # JSON output results
 |-- hunnu/                   # hunnu-lang (git submodule)
 |   `-- build/hunnu         # hunnu binary (after build)

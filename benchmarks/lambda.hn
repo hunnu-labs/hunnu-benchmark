@@ -1,0 +1,11 @@
+fn main() {
+    let mut sum = 0
+    let double = |x| x * 2
+    let add = |a, b| a + b
+    for let mut i = 0; i < 100000; i = i + 1 {
+        let a = double(i)
+        let b = double(a)
+        sum = add(sum, add(a, b))
+    }
+    print(sum)
+}

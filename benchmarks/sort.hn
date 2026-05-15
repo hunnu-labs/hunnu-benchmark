@@ -1,8 +1,8 @@
 fn main() {
     let arr = [64, 34, 25, 12, 22, 11, 90, 88, 77, 66, 55, 44, 33, 22, 11, 5, 1, 99, 76, 54]
     let n = 20
-    let sum = 0
-    for let i = 0; i < n; i = i + 1 {
+    let mut sum = 0
+    for let mut i = 0; i < n; i = i + 1 {
         sum = sum + arr[i]
     }
     print(sum)

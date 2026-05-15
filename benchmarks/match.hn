@@ -1,0 +1,20 @@
+fn classify(n) {
+    let mut result = 0
+    match n % 5 {
+        0 => { result = 100 }
+        1 => { result = 200 }
+        2 => { result = 300 }
+        3 => { result = 400 }
+        4 => { result = 500 }
+        _ => { result = 0 }
+    }
+    return result
+}
+
+fn main() {
+    let mut sum = 0
+    for let mut i = 0; i < 200000; i = i + 1 {
+        sum = sum + classify(i)
+    }
+    print(sum)
+}
